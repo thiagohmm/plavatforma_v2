@@ -113,20 +113,26 @@ class plataforma_service {
         'x-access-token': getToken()
  }})
       .then((res) => {
-        console.log(res.data);
+        
         dados = res.data;
       })
       .catch((err) => {
         console.log(err);
       });
-    return dados;
+ 
+      return dados;
+  
   };
 
 
 
   excluir = async (id,idprojeto) => {
-    console.log('id para ser deletado', id);
-    await axios.delete(`http://localhost:3001/api/v1/plataforma/delete/${id}`).catch((err) => {
+   
+    await axios.delete(`http://localhost:3001/api/v1/plataforma/delete/${id}`,{ headers: {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Headers': 'x-access-token',
+      'x-access-token': getToken()
+}}).catch((err) => {
       console.log(err);
     });
     return this.listaplataformaProjAll(idprojeto) ;
@@ -135,7 +141,12 @@ class plataforma_service {
 
 
   updatePlataforma = (plataforma) => {
-    axios.put(`http://localhost:3001/api/v1/plataforma/update/${plataforma.id}`, plataforma)
+    
+    axios.put(`http://localhost:3001/api/v1/plataforma/update/${plataforma.id}`, plataforma, { headers: {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Headers': 'x-access-token',
+      'x-access-token': getToken()
+}})
       .then((res) => {
         console.log(res);
         console.log(res.data);

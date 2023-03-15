@@ -29,6 +29,8 @@ function App() {
         }else if ( role.role_user){
             setRoleUser(role.role_user)
              localStorage.setItem('user-role', role.role_user);
+             localStorage.setItem('user-email', role.email_user);
+             
 
         }
     }

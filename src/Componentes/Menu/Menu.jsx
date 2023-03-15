@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Busca from '../busca';
+import logout from '../../util/logout';
 import { useNavigate } from 'react-router-dom';
 
 export const RoleUser = "user-role";
@@ -21,6 +22,8 @@ function Menu(props) {
    
     
 }, []);
+
+
 
 const refreshPage = () => {
   navigate(0);
@@ -54,14 +57,27 @@ const refreshPage = () => {
               <NavDropdown.Item href="/gerenciaUsuarios">Usuários</NavDropdown.Item>
               
             </NavDropdown>
-            <Nav.Link href="/logout">Sair</Nav.Link>
+            <Nav.Link href="/" onClick={logout} >Sair</Nav.Link>
           </Nav>
         </Navbar.Collapse>
         
      <Busca/>
      
     </Navbar>
-       ):(<Nav.Link href="/logout">Sair</Nav.Link>)}
+       ):(<Navbar bg="secondary" variant="dark" expand="lg"  >
+      
+       <Navbar.Brand href="#home">WebPlataforma</Navbar.Brand>
+       <Navbar.Toggle aria-controls="basic-navbar-nav" />
+       <Navbar.Collapse id="basic-navbar-nav">
+         <Nav className="me-auto">
+           <Nav.Link href="/">Home</Nav.Link>
+           <Nav.Link href="/" onClick={logout} >Sair</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+        
+     <Busca/>
+     </Navbar>
+     )}
    
     </Container>
   );

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ProjetoService from '../../Controller/projeto_service';
 import { Container } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 import Cancelar from '../../Componentes/cancelar'
+
 
 
 
@@ -16,6 +17,7 @@ function CadastroProjeto()  {
   const [isError, setIsError] = useState(false)
   const [privateProj, setPrivateProj] = useState(0)
   let IdRecebido  = useParams();
+  let navigate = useNavigate();
   const service = new ProjetoService();
   
 
@@ -37,21 +39,24 @@ if(nome === ''){
     const projeto = {
       id,
       nome,
-      privateProj
+      privateProj: parseInt(privateProj, 10)
     };
     
     
-    if (projeto.id) {
+    if (!id) {
       
       service.salvar(projeto);
+      limpaCampos(event);
+      setSucesso(true)
     } else {
      
       service.updateProjeto(projeto);
+      navigate(`/gerenciaProjeto`)
+      setSucesso(true)
     }
 
     
-    limpaCampos(event);
-    setSucesso(true)
+   
   }
   };
 
@@ -71,11 +76,11 @@ if(nome === ''){
     async function load(){
       
    setId(IdRecebido.id)
-   console.log(id)
+ 
 
     if (id){
     const projeto = await service.buscaProjeto(id);
-    console.log("mostrando projeto", projeto)
+   
     
     setNome(projeto.nome_projeto)
     setPrivateProj(projeto.private_projeto)
@@ -128,9 +133,9 @@ load();
                   className="form-control"
                   id="projectTypeSelect">
        
-                <option value="0">Comum</option>
+                <option value="0">Administrador</option>
                 <option value="2">Convidado</option>
-                <option value="1">Administrador</option>
+                <option value="1">Comum</option>
               </Form.Select>
                    </div>
           </div>

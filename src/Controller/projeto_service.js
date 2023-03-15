@@ -77,7 +77,8 @@ class projeto_service {
   };
 
   updateProjeto = (projeto) => {
-    axios.put(`/projetos/update/${projeto.id}`, projeto, { headers: {
+    console.log(projeto, " no serviceS")
+    axios.put(`http://localhost:3001/api/v1/projetos/update/${projeto.id}`, projeto, { headers: {
       'content-type': 'application/json',
       'Access-Control-Allow-Headers': 'x-access-token',
       'x-access-token': getToken()

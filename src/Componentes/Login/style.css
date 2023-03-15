@@ -24,7 +24,7 @@ input[type="password"] {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-input[type="submit"] {
+input[type="submit" ] {
   margin-top: 30px;
   cursor: pointer;
   font-size: 15px;
@@ -32,10 +32,13 @@ input[type="submit"] {
   border: 1px solid #3e3f3f;
   color: #fff;
   padding: 10px 20px;
+  initial-value: Login;
+  
 }
 
 input[type="submit"]:hover {
   background: #c0c0c0;
+
 }
 
 .button-container {

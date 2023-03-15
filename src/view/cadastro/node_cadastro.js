@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
   const [vnc_node, setVNC] = useState('')
   const [rdp_node, setRDP] = useState('')
   const [router_node, setRouter] = useState('')
-  const [host_plat_id, setHostPlat] = useState('')
+  const [host_plat_id, setHostPlat] = useState()
   const [plataformas, setPlataforma] = useState([])
   const [sucesso, setSucesso] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -30,23 +30,21 @@ import { useNavigate } from 'react-router-dom';
                   async function load() {
                     setId(IdRecebido.id)
                     console.log(id_node)
+                    console.log(IdRecebido.id)
               
                 const plataformas = await plataformaService.lplataforma();
-                console.log(plataformas);
                 setPlataforma(plataformas)
 
                 if (id_node){
-                  const nodes = await nodeService.getNodeById(id_node)
-                
-                  console.log(nodes)
-                  const {id_node, nome_node, ssh_node, vnc_node, rdp_node, router_node, host_plat_id } = nodes
-                  setId(id_node)
-                  setNome(nome_node)
-                  setSSH(vnc_node)
-                  setRDP(rdp_node)
-                  setRouter(router_node)
-                  setHostPlat(host_plat_id)
-                  document.getElementById('plataformaSelect').value = nodes.host_plat_id
+                   const nodes = await nodeService.getNodeById(IdRecebido.id)
+                   
+                   setNome(nodes.nome_node)
+                   setVNC(nodes.vnc_node)
+                   setSSH(nodes.ssh_node)
+                   setRDP(nodes.rdp_node)
+                   setRouter(nodes.router_node)
+                   setHostPlat(nodes.host_plat_id)
+                   document.getElementById('plataformaSelect').value = nodes.host_plat_id
 
                 }
               }
@@ -73,8 +71,8 @@ import { useNavigate } from 'react-router-dom';
     event.preventDefault();
     setId()
       setNome('')
-      setSSH()
-      setRDP()
+      setSSH('')
+      setRDP('')
       setRouter("")
       setHostPlat()
 
@@ -85,31 +83,36 @@ import { useNavigate } from 'react-router-dom';
     if(nome_node === '' || router_node ==='' || host_plat_id ===''){
       
       setIsError(true)
+      setSucesso(false)
     
-    }
+    }else{
 
     const nodes = {
-      
+      id_node,
       nome: nome_node,
       ssh: ssh_node,
       vnc: vnc_node,
       rdp: rdp_node,
-      router: router_node,
-      host_plat_id: getselect(),
+      router_node: router_node,
+      host_plat_id: parseInt(getselect(),10)
     };
   
-    if (id_node){
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAA", nodes )
+    if (id_node === undefined){
     nodeService.salvar(nodes);
+    setSucesso(true)
+    setIsError(false)
   }
     else{
-      nodeService.updateNodes(nodes, id_node)
+      nodeService.updateNodes(nodes)
      navigate("/GerenciaNodes");
     
     }
 
     limpaCampos(event)
     
-
+  }
+}
 
   
     return (
@@ -180,7 +183,7 @@ import { useNavigate } from 'react-router-dom';
                   id="inputSmall"
                   min="1"
                   max="6"
-                  name="vnc_node"
+                  name="rdp_node"
                   onChange={(e) => setRDP(e.target.value)}
                   value={rdp_node}
                   className="form-control"
@@ -249,6 +252,6 @@ import { useNavigate } from 'react-router-dom';
     );
   
 }
-
+ 
 
 export default CadastroNode

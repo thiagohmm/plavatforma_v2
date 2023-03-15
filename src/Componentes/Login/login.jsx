@@ -77,7 +77,7 @@ function Login({ setToken }) {
           {erro ?  <div className="error">Erro de Autenticação</div> : <div></div>} 
         </div>
         <div className="button-container">
-          <input type="submit" />
+          <input type="submit"  value="Login"/>
           
         </div>
       </form>
@@ -99,14 +99,14 @@ function Login({ setToken }) {
            
          </div>
          <div className="input-container">
-           <label>Password </label>
+           <label>Senha </label>
            <input type="password" onChange={e => setPassword(e.target.value)} name="pass" required />
-           <label>Password </label>
+           <label>Confirmar senha </label>
            <input type="password" onChange={e => setRetypePass(e.target.value)} name="retypepass" required />
            {erro ?  <div className="error">Erro na Confirmação</div> : <div></div>} 
          </div>
          <div className="button-container">
-           <input type="submit" />
+           <input type="submit" value="Registrar"/>
            
          </div>
        </form>

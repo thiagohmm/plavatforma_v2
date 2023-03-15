@@ -1,6 +1,6 @@
-import React , { useState,  useEffect } from 'react';
+import React , { useState} from 'react';
 import AsyncSelect from 'react-select/async';
-//import plataforma_service from '../controller/plataforma_service';
+import plataforma_service from '../Controller/plataforma_service';
 import { Link } from 'react-router-dom';
 
 
@@ -10,7 +10,7 @@ function Busca(props)  {
   const [inputValue, setValue] = useState('');
   const [selectedValue, setSelectedValue] = useState(null);
   const [loadData, setLoadData] = useState([])
-  //const service = new plataforma_service();
+  const service = new plataforma_service();
 
  
   const customStyles = {
@@ -40,10 +40,10 @@ const handlerKeyPress = (e, id)=>{
   console.log(id)
   
   if(e.key ==='Enter'){
-    //e.preventDefault();
+    e.preventDefault();
     const  href  = window.location.host;
-    //alert(`${href}listaNodes/${id}`)
-    window.location.href = `http://${href}/#/listaNodes/${id}`;
+    window.location.href = `http://${href}/listaNodes/${id}`;
+   
 
   }
 }
@@ -67,11 +67,11 @@ const handlerKeyPress = (e, id)=>{
       
       //console.log(evento)
       if (inputValue !== ''){
-        //const procuraService = service.buscaplataforma(evento);
-        //setLoadData([])
-       // setLoadData(procuraService)
+        const procuraService = service.buscaplataforma(evento);
+        setLoadData([])
+        setLoadData(procuraService)
 
-        //return (await procuraService).map((e) => ( {id: e.id, nome: e.nome_plataforma}))
+        return (await procuraService).map((e) => ( {id: e.id, nome: e.nome_plataforma}))
          
       }
     }      

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate  } from 'react-router-dom';
 import PlataformaService from '../../Controller/plataforma_service';
 import ProjetoService from '../../Controller/projeto_service';
 import Cancelar from "../../Componentes/cancelar"
@@ -22,6 +22,7 @@ function CadastroPlataforma() {
   const [privatePlat, setPrivatePlat] = useState(0)
 
   let IdRecebido = useParams();
+  let navigate = useNavigate();
   const serviceProj = new ProjetoService();
   const servicePlat = new PlataformaService();
 
@@ -30,7 +31,7 @@ function CadastroPlataforma() {
 
 
   const setCheckVariable = (event) => {
-    console.log(event.target.checked);
+    
     if (event.target.checked == true) {
 
       setActive(1)
@@ -42,23 +43,21 @@ function CadastroPlataforma() {
   useEffect(() => {
     async function load() {
       setId(IdRecebido.id)
-      console.log(id)
-
+     
       const projetos = await serviceProj.lprojetos();
-      console.log("Mostrando projetos", projetos);
       setProjetos(projetos);
 
       if (id) {
         const plat = await servicePlat.getplataformaName(id);
-
         setNome(plat.nome_plataforma)
         setAlias(plat.alias_plataforma)
         setActive(plat.active_plataforma)
-        setInf({ inf_plataforma: plat.inf_plataforma })
+        setInf(plat.inf_plataforma)
         setHostProjt(plat.host_projt_id)
+        setPrivatePlat(plat.private_plataforma)
         setId(id);
         document.getElementById('projectSelect').value = plat.host_projt_id
-        verifySelect();
+        verifySelect(plat.active_plataforma);
       }
 
     }
@@ -68,10 +67,13 @@ function CadastroPlataforma() {
   }, [id])
 
 
-  const verifySelect = () => {
-    if (active_plataforma === 1) {
+  const verifySelect = (param) => {
+    
+    if (param === 1) {
+     
       document.getElementById('active').checked = true
     } else {
+     
       document.getElementById('active').checked = false
     }
   }
@@ -93,21 +95,22 @@ function CadastroPlataforma() {
     } else {
 
 
-      const lastoption = host_projt_id;
+      
       const plataforma = {
         id,
         nome: nome_plataforma,
         alias: alias_plataforma,
         active_plataforma: parseInt(active_plataforma, 10),
         inf_plataforma,
-        host_projt_idyar: parseInt(getselect(), 10),
+        host_projt_id: parseInt(host_projt_id, 10),
         privatePlat: parseInt(privatePlat, 10)
       };
       if (id === undefined) {
         servicePlat.salvar(plataforma);
       } else {
+        
         servicePlat.updatePlataforma(plataforma)
-
+        navigate(`/gerenciaPlataforma`)
       }
 
       limpaCampos(event);
@@ -184,6 +187,7 @@ function CadastroPlataforma() {
                 <select
                   name="host_projt_id"
                   onChange={(e) => setHostProjt(e.target.value)}
+                  value={host_projt_id}
                   className="form-control"
                   id="projectSelect"
                   style={{ background: isError ? '#FFCCCB' : 'white', }}
@@ -209,7 +213,6 @@ function CadastroPlataforma() {
                   type="checkbox"
                   name="active_plataforma"
                   value={active_plataforma}
-                  defaultChecked
                   onClick={setCheckVariable}
                 />
 
@@ -224,9 +227,9 @@ function CadastroPlataforma() {
                   className="form-control"
                   id="projectTypeSelect">
 
-                  <option value="0">Comum</option>
+                  <option value="0">Administrador</option>
                   <option value="2">Convidado</option>
-                  <option value="1">Administrador</option>
+                  <option value="1">Comum</option>
                 </Form.Select>
               </div>
             </div>

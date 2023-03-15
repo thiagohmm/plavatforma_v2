@@ -13,7 +13,7 @@ const logout = async () => {
   } catch (e) {
     console.log(e);
   }
-  return <Navigate to="/login" />
+  return <Navigate to="/" />
 }
 
 export default logout
