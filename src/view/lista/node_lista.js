@@ -25,6 +25,9 @@ function ListaNode() {
     const [nodes, setNodes] = useState([])
     const [equipamento, setEquipamento] = useState([])
     const [searchfield, setSearchfield] = useState('')
+    
+    const [rdpHostname, SetrdpHostname] = useState('')
+    const [portaRDP, SetPortaRDP] = useState(0)
     const [role, setRole] = useState(localStorage.getItem('user-role'))
    
   
@@ -50,6 +53,13 @@ function ListaNode() {
       `http://${window.location.hostname}:8080/vnc/vnc.html?host=${window.location.hostname}&port=6080&path=${nome}${porta}${alias}?show_dot=true`
       
     );
+    }
+
+    const connectRDP = ( hostname, porta) =>{
+     
+      SetrdpHostname(hostname)
+      SetPortaRDP(porta)
+      window.open(`http://${window.location.hostname}:3000/rdp/${hostname}/${porta}`)
     }
 
   const conectToSSH = (event, ip, porta) => {
@@ -178,12 +188,11 @@ function ListaNode() {
                             <button
                               type="button"
                               className="btn btn-dark"
-                              onClick={(event) =>
-                                conectToSSH(
-                                  event,
+                              onClick={() =>
+                                connectRDP(
+                                  
                                   node.router_node,
-                                  node.ssh_node
-                                )
+                                  node.rdp_node                                )
                               }
                             >
                               RDP

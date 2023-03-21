@@ -97,7 +97,7 @@ import { useNavigate } from 'react-router-dom';
       host_plat_id: parseInt(getselect(),10)
     };
   
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAA", nodes )
+    
     if (id_node === undefined){
     nodeService.salvar(nodes);
     setSucesso(true)

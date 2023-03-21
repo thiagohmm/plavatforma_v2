@@ -1,6 +1,8 @@
 import React , { useState,  useEffect } from 'react';
-import UserService from '../../controller/usuarios_service'
-import Modal from '../../Componentes/modalPersonificada/modal';
+import UserService from '../../Controller/usuarios.service'
+import Modal from '../../Componentes/modalPersonificada/modal'
+import { useNavigate } from 'react-router-dom';
+import { Container } from "react-bootstrap";
 
 
 function GerenciaUsuarios(props) {
@@ -9,6 +11,7 @@ function GerenciaUsuarios(props) {
   let [id, setId] = useState();
   let [nome, setNome] = useState();
   const service = new UserService();
+  let navigate = useNavigate();
 
   useEffect (  () => {
     async function load(){
@@ -42,6 +45,7 @@ function GerenciaUsuarios(props) {
   }
 
   return (
+    <Container>
     <div>
       <h2>Gerenciamento de Usuários</h2>
       <br/>
@@ -50,7 +54,7 @@ function GerenciaUsuarios(props) {
       updateStatus={updateStatus}
       id={id}
       handleExcluir={handleExcluir}
-      texto="plataforma"   /> 
+      texto="Usuario"   /> 
                  
           
      ):("")}
@@ -64,18 +68,18 @@ function GerenciaUsuarios(props) {
         <tbody>
           {Usuarios.map((v) => { return (
           <tr key={v.id_user}>
-            <th scope="row">{v.user_user}</th>
-            { v.user_user === "Admin" ?("")
-            :(
+            <th scope="row">{v.email_user}</th>
+            
+            
             <td>
             <button type="button" className="btn btn-danger" onClick={() => excluir(v)}>Deletar</button></td>
-            )
-            }
+            
           </tr>
            ) })}
         </tbody>
       </table>
     </div>
+    </Container>
   );
 }
 export default  GerenciaUsuarios;

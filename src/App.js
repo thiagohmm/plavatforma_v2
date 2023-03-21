@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState }from 'react';
 
-import { Outlet, Router } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Menu from "./Componentes/Menu/Menu"
 
 import autenticacao from './Controller/authentication_service';
@@ -14,6 +14,7 @@ function App() {
     const [roleUser, setRoleUser] = useState();
     const service = new autenticacao()
     let navigate = useNavigate();
+    const location = useLocation()
 
     const  applyRoleUser = async () => {
         const role = await service.lprofile()
@@ -52,13 +53,14 @@ function App() {
 	
 
     useEffect(() => {
-        
+        console.log(location.pathname.match('/rdp'))
         applyRoleUser();
     }, []);
 	
 	return (
 		<React.Fragment>
-			{isLoggedIn && <Menu userMenu={roleUser}/>}
+            
+			{location.pathname.match('/rdp') === null && isLoggedIn && <Menu userMenu={roleUser}/>}
 			<Outlet />
 			
 		</React.Fragment>
