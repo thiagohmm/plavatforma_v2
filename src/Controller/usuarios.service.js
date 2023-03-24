@@ -71,6 +71,59 @@ class usuario_service {
 
 
 
+  countUsers  = async () => {
+    let dados = [];
+    await axios
+      .get(`http://localhost:3001/api/v1/users/countNewUser`, { headers: {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Headers': 'x-access-token',
+        'x-access-token': getToken()
+ }})
+      .then((res) => {
+       console.log(res.data);
+        dados = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return dados;
+  };
+
+
+  getNewUsers  = async () => {
+    let dados = [];
+    await axios
+      .get(`http://localhost:3001/api/v1/users/getNewUser`, { headers: {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Headers': 'x-access-token',
+        'x-access-token': getToken()
+ }})
+      .then((res) => {
+       console.log(res.data);
+        dados = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return dados;
+  };
+
+
+  
+
+
+  aprove = async (usuarios) => {
+    
+    await axios.put(`http://localhost:3001/api/v1/users/aproveUser/${usuarios.id_user}`, usuarios, { headers: {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Headers': 'x-access-token',
+      'x-access-token': getToken()
+}}).catch((err) => {
+      console.log(err);
+    });
+    return this.getNewUsers();
+  };
+
 }
 
 

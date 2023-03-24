@@ -7,6 +7,7 @@ import Projeto from "./view/cadastro/projeto_cadastro"
 import CadastroPlataforma from "./view/cadastro/plataforma_cadastro"
 import CadastroNode from "./view/cadastro/node_cadastro"
 import CadastroEquipamento from "./view/cadastro/equipamento_cadastro";
+import CadastroUsuario from "./view/cadastro/usuarios_cadastro"
 import ListaPlataforma from "./view/lista/plataforma_lista"
 import ListaNode from "./view/lista/node_lista";
 import GerenciaProjeto from './view/gerenciamento/gerencia_projeto';
@@ -35,6 +36,7 @@ export default () => {
 					<Route path="/cadastro-plataforma/:id?" element={<ProtectedRoute><CadastroPlataforma /></ProtectedRoute>}/>
 					<Route path="/cadastro-nodes/:id?" element={<ProtectedRoute><CadastroNode/></ProtectedRoute>}/>
 					<Route path="/cadastro-equipamento/:id?" element={<ProtectedRoute><CadastroEquipamento/></ProtectedRoute>}/>
+					<Route path="/cadastro-usuarios/:id?" element={<ProtectedRoute><CadastroUsuario/></ProtectedRoute>}/>
 					<Route path="/listaPlataforma/:id?" element={<ProtectedRoute><ListaPlataforma/></ProtectedRoute>}/>
 					<Route path="/listaNodes/:id?" element={<ProtectedRoute><ListaNode/></ProtectedRoute>}/>
 					<Route path="/gerenciaProjeto/" element={<ProtectedRoute><GerenciaProjeto/></ProtectedRoute>}/>

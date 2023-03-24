@@ -6,6 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Busca from '../busca';
 import logout from '../../util/logout';
 import { useNavigate } from 'react-router-dom';
+import Notificacao from '../Notificacao/notificacao';
 
 export const RoleUser = "user-role";
 
@@ -33,7 +34,7 @@ const refreshPage = () => {
     <Container>
       {refreshPage}
       { props.userMenu === 1 ?(
-    <Navbar bg="secondary" variant="dark" expand="lg"  >
+    <Navbar  variant="dark" expand="lg" style={{ backgroundColor: "#009CB4"}} >
       
         <Navbar.Brand href="#home">WebPlataforma</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -46,6 +47,7 @@ const refreshPage = () => {
               <NavDropdown.Item href="/cadastro-plataforma">Plataforma</NavDropdown.Item>
               <NavDropdown.Item href="/cadastro-nodes">Nodes</NavDropdown.Item>
               <NavDropdown.Item href="/cadastro-equipamento">Equipamento</NavDropdown.Item>
+              <NavDropdown.Item href="/cadastro-usuarios">Usuários</NavDropdown.Item>
               
               
             </NavDropdown>
@@ -60,11 +62,11 @@ const refreshPage = () => {
             <Nav.Link href="/" onClick={logout} >Sair</Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        
+        <Notificacao/>
      <Busca/>
      
     </Navbar>
-       ):(<Navbar bg="secondary" variant="dark" expand="lg"  >
+       ):(<Navbar  variant="dark" expand="lg" style={{ backgroundColor: "#006D7E"}} >
       
        <Navbar.Brand href="#home">WebPlataforma</Navbar.Brand>
        <Navbar.Toggle aria-controls="basic-navbar-nav" />
