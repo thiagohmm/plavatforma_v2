@@ -53,8 +53,8 @@ class usuario_service {
 
 
  
-  updateProjeto = (usuarios) => {
-    axios.put(`http://localhost:3001/api/v1/users/update/${usuarios.id}`, usuarios, { headers: {
+  updateUsers = (usuarios) => {
+    axios.put(`http://localhost:3001/api/v1/users/update/${usuarios.id_user}`, usuarios, { headers: {
       'content-type': 'application/json',
       'Access-Control-Allow-Headers': 'x-access-token',
       'x-access-token': getToken()
@@ -122,6 +122,28 @@ class usuario_service {
       console.log(err);
     });
     return this.getNewUsers();
+  };
+
+
+
+
+
+  listUsersById = async (id) => {
+    let dados = [];
+    await axios
+      .get(`http://localhost:3001/api/v1/users/${id}` , { headers: {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Headers': 'x-access-token',
+        'x-access-token': getToken()
+ }})
+      .then((res) => {
+        //console.log(res.data);
+        dados = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return dados;
   };
 
 }

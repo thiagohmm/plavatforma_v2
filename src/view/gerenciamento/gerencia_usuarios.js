@@ -31,6 +31,13 @@ function GerenciaUsuarios(props) {
 
   }
 
+  
+
+  const preparaEditar  = (id) => {
+    console.log('editar para editar:', id);
+    
+   navigate(`/cadastro-usuarios/${id}`);
+  };
  
   async function handleExcluir(id){
     setShowModal(false)
@@ -45,7 +52,9 @@ function GerenciaUsuarios(props) {
   }
 
   return (
+    
     <Container>
+     
     <div>
       <h2>Gerenciamento de Usuários</h2>
       <br/>
@@ -72,7 +81,9 @@ function GerenciaUsuarios(props) {
             
             
             <td>
-            <button type="button" className="btn btn-danger" onClick={() => excluir(v)}>Deletar</button></td>
+            <button type="button" className="btn btn-info" onClick={() => preparaEditar(v.id_user)}>Atualizar</button>
+            <button type="button" className="btn btn-danger" onClick={() => excluir(v)}>Deletar</button>
+            </td>
             
           </tr>
            ) })}

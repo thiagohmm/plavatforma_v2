@@ -51,10 +51,8 @@ load();
                     <p>
                       <strong> {plataforma.nome_plataforma}</strong>
                       <span
-                        style={{
-                          float: 'right',
-                        }}
-                        className="badge badge-dark"
+                       
+                        className="badge badge-dark" style={{ display: 'flex', position: 'static',  float: 'right', padding: '5px', margin: '10px'}}
                       >
                         <Link
                           to={{

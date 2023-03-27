@@ -29,8 +29,7 @@ import { useNavigate } from 'react-router-dom';
     useEffect(() => {
                   async function load() {
                     setId(IdRecebido.id)
-                    console.log(id_node)
-                    console.log(IdRecebido.id)
+                    
               
                 const plataformas = await plataformaService.lplataforma();
                 setPlataforma(plataformas)

@@ -1,77 +1,130 @@
 import React , { useState,  useEffect } from 'react';
+import { useParams, useNavigate  } from 'react-router-dom';
 import UserService from '../../Controller/usuarios.service'
 import Cancelar from '../../Componentes/cancelar'
 import { Container } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 
 function CadastroUsuario(props) {
 
   
-  const [usuarios, setusUsuarios] = useState([]);
+  
+  const [id, setId] = useState('');
+  const [passwdExisted, setPasswdExisted] = useState('');
   const [passwd, setPasswd] = useState('');
-  const [user, setUser] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState(0)
+  const [ativo, setAtivo] = useState(false)
   const [isError, SetisError] = useState(true);
   const [sucesso, Setsucesso] = useState(false);
   const service = new UserService();
+  let IdRecebido = useParams();
+  const navigate = useNavigate();
+
+
+
+
+
+  const setCheckVariable = (event) => {
+    
+    if (event.target.checked === true) {
+
+      setAtivo(true)
+    } else {
+      setAtivo(false)
+    }
+  };
+
+
+  const verifySelect = (param) => {
+    
+    if (param === true) {
+     
+      document.getElementById('active').checked = true
+    } else {
+     
+      document.getElementById('active').checked = false
+    }
+  }
+
+
 
    useEffect (  () => {
      async function load(){
-     const usuariosl = await service.lusuarios();
-     setusUsuarios(usuariosl)
+      setId(IdRecebido.id)
      
+      
+    
+      if (id) {
+        const userReceived = await service.listUsersById(id);
+        console.log(userReceived)
+        setId(id);
+        setEmail(userReceived.email_user);
+        setPasswd(userReceived.passwd_user)
+        setPasswdExisted(userReceived.passwd_user)
+        setRole(userReceived.role_user)
+        verifySelect(userReceived.ativo_user);
+        if (userReceived.ativo_user === 0){
+          setAtivo(false)
+        }else{
+          setAtivo(true)
+        }
+       
+       
+      }
+   
+    
     }
-   
     load();
-   
-   },[usuarios])
+   },[id])
 
-const verificaUsuario = (user) =>{
-  let count = 0 ;
-  usuarios.forEach((nome) => {
-
-    let teste = JSON.stringify(nome.user_user).replace(/['"]+/g, '')
-    if (teste.trim().localeCompare(user.trim()) === 0)
-      // console.log(teste.trim().localeCompare(user.trim()))
-      // console.log(` ${teste} comparado a ${user} `)
-      count = count + 1;
-     
-     
-
-  })
-  return count;
-
-
-}
 
 const Limpar = () => {
-  setUser('');
+  setEmail('');
   setPasswd('');
   SetisError(true);
-
-  document.getElementById("user").value = "";
-  document.getElementById("password").value = "";
-  
+ 
 }
  
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     
-     if (verificaUsuario(user) === 0 && user != "" && passwd != "" ){
+     if (email != "" ){
+      let usuario = {}
 
-      const usuario = {
-        usuario: user,
-        passwd: passwd,
-      };
+      if (passwd === passwdExisted){
+
+         usuario = {
+        id_user: id,
+        email_user: email,
+        ativo_user: ativo,
+        role_user: parseInt(role, 10)
      
-      service.salvar(usuario)
-      Setsucesso(true);
-      Limpar()
+          }
+          await service.updateUsers(usuario)
+          console.log("Dados recebidos sem passwd", usuario) 
+      }else{
 
-     }else{
+      usuario = {
+        id_user: id,
+        email_user: email,
+        ativo_user: ativo,
+        role_user: parseInt(role, 10),
+        passwd_user: passwd,
+        mudaPasswd: true
+      }
+        await service.updateUsers(usuario)
+        console.log("Dados recebidos", usuario)
+     
+     }
+     navigate(`/gerenciaUsuarios`)
+      }
+        else{
       SetisError(false);
       Setsucesso(false);
-       //alert("usuario ja existe")
+      
      }
-   
+    
   }
 
   return(
@@ -90,35 +143,78 @@ const Limpar = () => {
             <> </>
           )}
        <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-4">
           <div className="form-group">
-            <label style={{ color: isError ? 'black' : '#f70d1a', }}>Usuario:*</label>
+            <label style={{ color: isError ? 'black' : '#f70d1a', }}>Email:*</label>
             <input
               id="user"
               type="text"
-              name="user"
-              onChange={e => setUser(e.target.value)}
+              name="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               className="form-control"
               style={{ background: isError ? 'white' : '#FFCCCB', }}
-              
+              disabled
             />
             
           </div>
           
         </div>
-        <div className="col-md-3">
+        <div className="col-md-4">
           
-            <label>Senha:*</label>
+            <label>Senha:</label>
             <input
               id="password"
               type="password"
-              name="password"
+              name="passwd"
+              value={passwd}
               onChange={e => setPasswd(e.target.value)}
               className="form-control"
             />
                                 
         </div>
-      </div>
+           
+        <div className="col-md-4">
+         
+             
+
+                <label>Usuario Ativo:</label>
+                <Form.Check 
+                type="switch"
+                 id="active"
+                 name="ativo"
+                 value={ativo}
+                 onClick={setCheckVariable}
+        //label="Check this switch"
+      />
+            </div>
+          
+          </div>
+         
+          <div className="row">
+        <div className="col-md-4">
+          <div className="form-group">
+                <label for="exampleSelect1">Tipo De Usuário:*</label>
+                <Form.Select name="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="form-control"
+                  id="projectTypeSelect">
+                  
+                  <option value="0">Comum</option>
+                  <option value="1">Administrador</option>
+                  <option value="2">Convidado</option>
+                  
+
+                </Form.Select>
+            
+                </div>
+            
+            </div>
+
+            </div>
+
+            
 
       
       <div className="row">
@@ -137,7 +233,7 @@ const Limpar = () => {
           <Cancelar></Cancelar>
         </div>
       </div>
-    </div>
+      </div>
   </div>
 
   </Container>

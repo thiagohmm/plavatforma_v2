@@ -47,8 +47,7 @@ const refreshPage = () => {
               <NavDropdown.Item href="/cadastro-plataforma">Plataforma</NavDropdown.Item>
               <NavDropdown.Item href="/cadastro-nodes">Nodes</NavDropdown.Item>
               <NavDropdown.Item href="/cadastro-equipamento">Equipamento</NavDropdown.Item>
-              <NavDropdown.Item href="/cadastro-usuarios">Usuários</NavDropdown.Item>
-              
+             
               
             </NavDropdown>
             <NavDropdown title="Gerenciar" id="basic-nav-dropdown">

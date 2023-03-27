@@ -29,8 +29,7 @@ const Notificacao = () => {
    
   },[])
 
-
-
+ 
   async function handleExcluir(id){
    
     const usuarios_load = await service.excluir(id);
@@ -61,11 +60,12 @@ const Notificacao = () => {
     {count !== 0 ?(
     
       <Dropdown className='drop' >
-      <Dropdown.Toggle variant="secondary" id="dropdown-basic" >
+      <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor: "#006D7E", background: "#006D7E"}} >
       <img src={`${process.env.PUBLIC_URL}../../../letter.png`}  />
                <span id="group">
                 
-                 <span class="badge badge-light">{count}</span>
+                 <span class="badge badge-light" 
+                 >{count}</span>
 
                </span>
       </Dropdown.Toggle>
