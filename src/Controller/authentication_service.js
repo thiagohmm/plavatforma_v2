@@ -23,6 +23,20 @@ class autenticacao {
    
   return dados;
 };
+
+
+
+register = (registerUser) => {
+  axios.post(`http://localhost:3001/api/v1/auth/register`, registerUser)
+    .then((res) => {
+      console.log(res);
+      console.log(res.data);
+      // alert('Contato salvo com sucesso');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
             
             
   

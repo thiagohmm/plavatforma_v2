@@ -50,6 +50,16 @@ function Login({ setToken }) {
 
     if (password !== retypepass){
       setErro(true);
+    }else{
+
+      const registerObj ={
+        email: username,
+        passwd: password
+      }
+
+    const register = await service.register(registerObj)
+    setModalShow(false)
+
     }
 
 
