@@ -19,6 +19,7 @@
     "react-router-dom": "^6.6.2",
     "react-scripts": "5.0.1",
     "react-tabs": "^6.0.0",
+    "react-tiny-popover": "^7.2.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

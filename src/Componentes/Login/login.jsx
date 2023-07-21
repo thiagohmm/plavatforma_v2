@@ -39,7 +39,7 @@ function Login({ setToken }) {
             }, 500);
 
     }else{
-      console.log("Caiu aqui")
+      
       setErro(true);
     }
 

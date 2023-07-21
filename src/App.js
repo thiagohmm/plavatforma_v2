@@ -21,13 +21,12 @@ function App() {
         
         if (role === '500'){
             console.log(role)
-            console.log("caiu aqui")
             localStorage.clear();
             localStorage.setItem('user-token', null);
             localStorage.setItem('user-role', null);
             setIsLoggedIn(false)
             navigate('/login')
-        }else if ( role.role_user){
+        }else {
             setRoleUser(role.role_user)
              localStorage.setItem('user-role', role.role_user);
              localStorage.setItem('user-email', role.email_user);

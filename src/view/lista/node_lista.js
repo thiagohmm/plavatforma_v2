@@ -9,7 +9,7 @@ import { Container} from "react-bootstrap";
 import Accordion from 'react-bootstrap/Accordion';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-
+import ConnectedUsers from '../../Componentes/ConnectUsers/connectedUsers';
 
 
 function ListaNode() {
@@ -29,8 +29,12 @@ function ListaNode() {
     const [rdpHostname, SetrdpHostname] = useState('')
     const [portaRDP, SetPortaRDP] = useState(0)
     const [role, setRole] = useState(localStorage.getItem('user-role'))
-   
+    const [responseSocket, setResponseScocket] = useState([])
   
+    const client = new WebSocket('ws://localhost:9876/');
+    const TOKEN_KEY = "user-email";
+
+    const getEmail = () => localStorage.getItem(TOKEN_KEY);
 
 
   const conectToVnc = (event, ip, porta, nome) => {
@@ -69,42 +73,84 @@ function ListaNode() {
   };
 
   useEffect(() => {
-    async function load() {
-
-      
-
-    const id = IdRecebido.id;
-   
     
-    const getplataforma = await plataformaservice.getplataformaName(id);
-    setPlataforma(getplataforma);
-    
-
-    const getnodes = await nodeservice.listanodesplataforma(id);
-     setNodes(getnodes)
-    
-
-     const equip = await equipamentoservice.listaequipPlataforma(id);
-    
-    setEquipamento(equip)
-     
-  }
-
-  load();
-
+      load();
 }, [])
+
+
+async function load() {
+  const id = IdRecebido.id;
+ 
+  const getplataforma = await plataformaservice.getplataformaName(id);
+  setPlataforma(getplataforma);
+
+  const getnodes = await nodeservice.listanodesplataforma(id);
+   setNodes(getnodes)
+  
+  const equip = await equipamentoservice.listaequipPlataforma(id);
+   setEquipamento(equip)
+
+
+ 
+   
+}
+
+
+
+useEffect(() => {
+  connectWebSocket();
+}, [setResponseScocket])
+
+
+function connectWebSocket(){
+
+  const apiCall = {
+    email: getEmail(),
+    plataformaId: IdRecebido.id
+  };
+
+
+
+  client.onopen = () => {
+
+    client.send(JSON.stringify(apiCall));
+  
+    //client.send(`{"email": "${localStorage.getItem('user-email')}", "plataformaId": ${IdRecebido.id}}`)
+}
+
+client.onmessage = (message) => {
+  if (message.data) {
+      const parsedData = JSON.parse(message.data)
+      console.log("exibindo", message.data)
+      console.log("exibindo PARSE", parsedData)
+      setResponseScocket(parsedData)
+  }
+}
+
+
+return () => {
+  client.close()
+}
+
+}
+
 
 
    
     return (
       <Container>
-        <div>
-
+        
+       
+       
         <div className="alert alert-warning">
+        <ConnectedUsers id={IdRecebido.id}  email={responseSocket}>
+          
+          
+          </ConnectedUsers>
         <h4 className="alert-heading">Informações</h4>
         <p className="mb-0">{plataforma.inf_plataforma}</p>
         </div>
-
+       
         <Tabs>
     <TabList>
       <Tab>Nodes</Tab>
@@ -192,7 +238,7 @@ function ListaNode() {
                                 connectRDP(
                                   
                                   node.router_node,
-                                  node.rdp_node                                )
+                                  node.rdp_node)
                               }
                             >
                               RDP
@@ -246,7 +292,7 @@ function ListaNode() {
     </TabPanel>
   </Tabs>
  
-    </div>
+    
       </Container>
     );
   }
